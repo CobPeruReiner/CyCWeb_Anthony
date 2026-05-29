@@ -1,0 +1,26 @@
+services:
+  frontend:
+    image: cobperureiner/cycweb-frontend:latest
+    build:
+      context: ./frontend
+    env_file:
+      - ./frontend/.env.production
+    volumes:
+      - frontend-build:/app/build
+
+  backend:
+    image: cobperureiner/cycweb-backend:latest
+    build:
+      context: ./backend
+    env_file:
+      - ./backend/.env.production
+    volumes:
+      - frontend-build:/app/build
+      - ./backend/assets:/app/backend/assets
+    depends_on:
+      - frontend
+    ports:
+      - "4006:4006"
+
+volumes:
+  frontend-build:
